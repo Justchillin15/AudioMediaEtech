@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Spatipay</div>
+        <nav>
+            <ul>
+                <li>
+                    <input type="text" id="search-input" placeholder="Search..." class="search">
+                </li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Your Library</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero appear">
+            <h1>Welcome to Your Music</h1>
+            <p>Discover new music and enjoy your favorites.</p>
+            <button class="play-button">Start the Simulation</button>
+        </section>
+        <section class="playlist disappear">
+            <h2>Featured Playlists</h2>
+            <div class="playlist-container">
+                <div class="playlist-item" data-image="Radiobroadcasting.webp" data-audio="radio.mp3">
+                    Radio Broadcast
+                    <button class="close-button">X</button>
+                </div>
+                <div class="playlist-item" data-image="Music.webp" data-audio="dionela.mp3">
+                    Music
+                    <button class="close-button">X</button>
+                </div>
+                <div class="playlist-item" data-image="Podcast.webp" data-audio="duende.mp3">
+                    Podcast
+                    <button class="close-button">X</button>
+                </div>
+                <div class="playlist-item" data-image="Soundeffects.webp" data-audio="cartoon.mp3">
+                    Sound Clips/Effects
+                    <button class="close-button">X</button>
+                </div>
+                <div class="playlist-item" data-image="Soundrecording.webp" data-audio="Soundrecording.mp3">
+                    Sound Recording
+                    <button class="close-button">X</button>
+                </div>
+            </div>
+            <div class="image-preview">
+                <img src="" alt="Preview" id="preview-image">
+            </div>
+        </section>
+    </main>
+    <footer>
+        <audio id="audio-player" controls>
+            <source src="" type="audio/mpeg" id="audiosource">
+            Your browser does not support the audio element.
+        </audio>
+    </footer>
+
+
+
+
+
+
+
+    <script>
+        const playButton = document.querySelector('.play-button');
+        const playlist = document.querySelector('.playlist');
+        const hero = document.querySelector('.hero');
+        const previewImage = document.getElementById('preview-image');
+        const playlistItems = document.querySelectorAll('.playlist-item');
+        const closeButtons = document.querySelectorAll('.close-button');
+        const audioPlayer = document.getElementById('audio-player');
+        const searchInput = document.getElementById('search-input');
+
+
+        playButton.addEventListener('click', () => {
+            toggleVisibility([hero], playlist);
+        });
+
+        playlistItems.forEach(item => {
+        item.addEventListener('click', () => {
+            disableHoverEffect();
+            appearButton(item);
+            playAudio(item);
+            showImage(item);
+        });
+    });
+
+    closeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            enableHoverEffect();
+            event.currentTarget.style.display = 'none';
+            audioPlayer.pause(); // Stop the audio
+            audioPlayer.currentTime = 0; // Reset the audio to the beginning
+            hideImage();
+            event.stopPropagation(); // Prevent the click event from bubbling up to the playlist item
+        });
+    });
+
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            const query = searchInput.value.trim().toLowerCase();
+            if (query === 'creators') {
+                window.location.href = 'creators.html'; // Redirect to the creators page
+            } else if (query === 'main') {
+                window.location.href = 'index.html'; // Redirect to the main page
+            }
+        }
+    });
+
+        function toggleVisibility(hideElements, ...showElements) {
+            hideElements.forEach(el => {
+                el.classList.remove('appear');
+                el.classList.add('disappear');
+            });
+            showElements.forEach(el => {
+                el.classList.remove('disappear');
+                el.classList.add('appear');
+            });
+        }
+
+        function enableHoverEffect() {
+        playlistItems.forEach(item => {
+            item.addEventListener('mouseover', showPreview);
+            item.addEventListener('mouseout', hidePreview);
+        });
+    }
+
+    function disableHoverEffect() {
+        playlistItems.forEach(item => {
+            item.removeEventListener('mouseover', showPreview);
+            item.removeEventListener('mouseout', hidePreview);
+        });
+    }
+
+    function showPreview(event) {
+        const imageUrl = event.currentTarget.getAttribute('data-image');
+        previewImage.src = imageUrl;
+        previewImage.style.display = 'block';
+    }
+
+    function hidePreview() {
+        previewImage.style.display = 'none';
+    }
+
+    function disappearButton() {
+        closeButtons.forEach(button => {
+            button.style.display = 'none';
+        });
+    }
+
+    function appearButton(clickedItem) {
+        disappearButton(); // Hide all buttons first
+        const closeButton = clickedItem.querySelector('.close-button');
+        if (closeButton) {
+            closeButton.style.display = 'block';
+        }
+    }
+
+    function playAudio(clickedItem) {
+            const audioUrl = clickedItem.getAttribute('data-audio');
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
+        }
+
+        function showImage(clickedItem) {
+        const imageUrl = clickedItem.getAttribute('data-image');
+        previewImage.src = imageUrl;
+        previewImage.style.display = 'block';
+    }
+
+    function hideImage() {
+        previewImage.style.display = 'none';
+    }
+
+
+    // Enable hover effect initially
+    enableHoverEffect();
+    disappearButton();
+
+    </script>
+</body>
+</html>

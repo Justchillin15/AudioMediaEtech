@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Spatipay</div>
+        <nav>
+            <ul>
+                <li>
+                    <input type="text" id="search-input" placeholder="Search..." class="search">
+                </li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Your Library</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <script>
+    const searchInput = document.getElementById('search-input');
+
+        searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            const query = searchInput.value.trim().toLowerCase();
+            if (query === 'creators') {
+                window.location.href = 'creators.html'; // Redirect to the creators page
+            } else if (query === 'main') {
+                window.location.href = 'index.html'; // Redirect to the main page
+            }
+        }
+    });
+    </script>
+</body>
+</html>
